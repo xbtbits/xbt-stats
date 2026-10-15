@@ -1,0 +1,519 @@
+@font-face { font-family: "Plus Jakarta Sans"; src: url("/fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Michroma"; src: url("/fonts/michroma-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+:root {
+  --bg: #050505; --card: rgba(8, 8, 8, 0.82); /* dark glass over the block grid */ --edge: rgba(255, 255, 255, 0.08);
+  --ink: #fafafa; --ink-soft: rgba(255, 255, 255, 0.82); --ink-faint: rgba(255, 255, 255, 0.68);
+  --gold: #eab448; --gold-hi: #fbcc5c; --gold-lo: #8c6e35; --gold-deep: #3a2a0c; /* "Histórico" gold */
+  --up: #6cc04a; --down: #ff5a4e; --warn: #ff6b5b;
+  --display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --cyber: "Michroma", "Plus Jakarta Sans", system-ui, sans-serif; /* wordmark, titles, labels: single weight 400 */
+  --radius: 10px;
+  --gold-text: linear-gradient(108deg, #fff1c4 0%, #fbcc5c 32%, #eab448 66%, #c9963f 100%);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; color: var(--ink-soft); font-weight: 400; font-size: 0.9375rem; font-family: var(--body); line-height: 1.55;
+  /* Block grid: 1px black gaps every 6px over a golden glow, so the squares show where
+     the glow is: strongest at the top like a horizon, plus a soft halo mid-page. */
+  background-color: #050505;
+  background-image:
+    linear-gradient(90deg, #050505 1px, transparent 1px),
+    linear-gradient(#050505 1px, transparent 1px),
+    radial-gradient(900px 500px at 50% 800px, rgba(251, 204, 92, 0.10), transparent 70%), /* golden halo mid-page */
+    radial-gradient(1400px 620px at 50% -8%, rgba(234, 180, 72, 0.34), rgba(234, 180, 72, 0.09) 55%, transparent 85%),
+    linear-gradient(rgba(234, 180, 72, 0.045), rgba(234, 180, 72, 0.045));
+  background-size: 6px 6px, 6px 6px, auto, auto, auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, repeat;
+}
+a { color: var(--gold); text-underline-offset: 0.2em; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.skip { position: absolute; left: -999px; top: 0; padding: 0.5rem 1rem; background: var(--gold); color: #0a0a0a; z-index: 10; }
+.skip:focus { left: 1rem; top: 1rem; }
+
+.wrap { max-width: 90rem; margin: 0 auto; padding-inline: max(16px, 3vw); }
+.top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem 1rem; padding-block: 1.2rem; }
+.wordmark {
+  font-family: var(--cyber); font-weight: 400; font-size: 1rem; text-transform: uppercase; text-decoration: none; letter-spacing: 0.12em;
+  background: var(--gold-text);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  display: inline-flex; align-items: center; min-height: 47px; /* the LED logo's height (brand.js), held before it draws */
+}
+/* LED wordmark: brand.js draws coin + letters on a canvas; the text stays for screen readers */
+.wordmark.led { background: none; color: inherit; display: inline-flex; align-items: center; line-height: 0; }
+.wordmark.led canvas { display: block; image-rendering: pixelated; }
+.nav { display: flex; flex-wrap: wrap; gap: 0 1.2rem; }
+/* Phones: the six tabs as a tidy 3 x 2 grid across the full width */
+@media (max-width: 480px) {
+  .nav { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 0.15rem 0.85rem; width: 100%; }
+  .nav a { letter-spacing: 0.04em; justify-self: start; }
+  /* Converter before Mining here, so each column pairs words of the same length
+     (DASHBOARD/CONVERTER, CHARTS/MINING, NODES/ABOUT) and both rows get even gaps */
+  .nav a[href="/mining"] { order: 1; }
+  .nav a[href="/about"] { order: 2; }
+}
+.nav a { color: var(--ink-soft); font-family: var(--cyber); font-weight: 400; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; padding: 0.5rem 0; }
+.nav a[aria-current="page"] {
+  color: var(--ink); padding-bottom: 0.7rem; /* underlined with a row of gold blocks */
+  background-image: linear-gradient(90deg, var(--gold) 4px, transparent 4px);
+  background-size: 6px 4px; background-repeat: repeat-x; background-position: 0 100%;
+}
+
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; margin: 0 0 0.6rem; }
+h1:not(.stat-label) {
+  font-family: var(--cyber); font-size: 1.375rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em;
+  background: var(--gold-text); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+h2 { font-family: var(--cyber); font-size: 0.6875rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; color: var(--ink-faint); }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); font-size: 0.8125rem; font-weight: 400; }
+.stat-label, .price-stats dt, .chart-stats dt, .counter dt, th {
+  font-family: var(--cyber); color: var(--ink-faint); font-size: 0.65rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.stat-label { margin: 0 0 6px; }
+
+/* Terminal-style section labels and figure captions */
+.term, .fig { font-family: ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+.term { font-size: 0.75rem; margin: 0.4rem 0 0.7rem; }
+.fig { font-size: 0.6875rem; margin: 0.4rem 20px 0; }
+.term .cur, .nf-term .cur { display: inline-block; width: 0.55em; height: 1em; background: var(--gold); vertical-align: -0.15em; margin-left: 0.4em; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .term .cur, .nf-term .cur { animation: none; } }
+
+.card { background: var(--card); border: 1px solid var(--edge); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.hero-price {
+  font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 5vw, 2.75rem); line-height: 1.1;
+  letter-spacing: -0.03em; margin: 0.2rem 0 0.4rem;
+  color: var(--gold); /* solid gold: the fade stays on the logo and page titles only */
+}
+
+/* Price panel: live price and stats on top, the chart edge to edge below */
+.price-panel { padding: 0; margin-bottom: 1.5rem; overflow: hidden; }
+.price-top { display: flex; flex-wrap: wrap; align-items: stretch; row-gap: 0.9rem; padding: 18px 20px; }
+.price-main { flex-basis: 100%; min-width: 0; } /* own line at every width: the stats row never jumps up beside it when numbers are short */
+.price-label { color: var(--ink-faint); font-size: 0.625rem; letter-spacing: 0.08em; } /* same colour as every other card title */
+.price-main .hero-price { margin: 0.1rem 0 0.25rem; }
+.change-line { font-size: 0.875rem; margin: 0; }
+.price-stats, .chart-stats { display: flex; flex-wrap: wrap; align-items: center; row-gap: 0.9rem; margin: 0; min-width: 0; flex: 1 1 auto; }
+.price-stats div, .chart-stats div { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; padding: 0 1.1rem; border-left: 1px solid var(--edge); }
+.price-stats div:first-child, .chart-stats div:first-child { border-left: 0; }
+/* Desktop: price and chart stats spread across their card, each centred in its column */
+@media (min-width: 700px) {
+  .price-stats div, .chart-stats div { flex: 1 1 auto; align-items: center; text-align: center; }
+}
+/* Eight stats (Difficulty) would leave one alone on a second line: two even rows of four */
+@media (min-width: 700px) {
+  .chart-stats:has(> div:nth-child(8)) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .chart-stats:has(> div:nth-child(8)) > div:nth-child(4n + 1) { border-left: 0; }
+}
+.price-stats dt, .chart-stats dt { margin: 0; white-space: nowrap; }
+.price-stats dd, .chart-stats dd { margin: 0; font-size: 0.875rem; color: var(--ink); white-space: nowrap; }
+.chart-stats { padding: 4px 0 14px; margin-bottom: 14px; border-bottom: 1px solid var(--edge); }
+.chart-stats div { padding-inline: 0.8rem; }
+.chart-stats div:first-child { padding-left: 0; }
+.chart-stats dd[data-dir="up"] { color: var(--up); }
+.chart-stats dd[data-dir="down"] { color: var(--down); }
+.price-chart { border-top: 1px solid var(--edge); padding-top: 12px; }
+.price-chart .chart-head { padding-inline: 20px; }
+.price-chart .chart-note, .price-chart .chart-ma-note { padding-inline: 20px; font-size: 0.8125rem; }
+.source-line { color: var(--ink-faint); font-size: 0.75rem; margin: 0; padding: 0.6rem 20px 14px; }
+
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 2rem; }
+.stats { margin: 0; }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 7px 0; font-size: 0.9375rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.row:last-child { border-bottom: 0; }
+.row dt { color: var(--ink-soft); font-weight: 400; }
+.row dd { margin: 0; text-align: right; font-weight: 600; color: var(--ink); white-space: nowrap; } /* the label wraps, never the value */
+
+[data-dir="up"] { color: var(--up); }
+[data-dir="down"] { color: var(--down); }
+[data-dir="flat"] { color: var(--ink-soft); }
+
+.notice { display: flex; gap: 0.6rem; align-items: flex-start; border: 1px solid var(--warn); background: rgba(255, 107, 91, 0.08); border-radius: var(--radius); padding: 10px 14px; font-size: 0.875rem; margin-bottom: 1rem; }
+.notice[hidden] { display: none; }
+.notice::before { content: "⚠"; color: var(--warn); font-weight: 700; }
+
+.pools { list-style: none; margin: 0; padding: 0; }
+.pool { display: grid; grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 7.5rem; gap: 0.6rem; align-items: center; padding: 0.3rem 0; }
+.pool-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.leds { display: flex; gap: 1px; height: 5px; overflow: hidden; } /* LED bars (leds.js): the price chart's 5 px blocks on a 6 px grid */
+.leds i { flex: none; width: 5px; height: 5px; position: relative; background: rgba(255, 255, 255, 0.08); }
+.leds i.on, .leds b.on { background: rgba(251, 204, 92, 0.8); }
+.leds b { position: absolute; left: 0; top: 0; bottom: 0; } /* part-lit LED: the share smaller than one block */
+.pool-share { font-size: 0.8125rem; color: var(--ink-faint); text-align: right; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-bottom: 0.4rem; }
+th, td { text-align: left; padding: 0.35rem 0.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+th.num, td.num { text-align: right; }
+td.num.left { text-align: left; }
+.card td.num { white-space: nowrap; } /* table values stay on one line; headers wrap instead */
+@media (max-width: 699px) { .grid td.num { font-size: 0.6875rem; letter-spacing: 0; } .grid th, .grid td { padding-inline: 0.15rem; } } /* dashboard tables fit a phone */
+
+.upgrades { margin: 0.6rem 0 0; padding-left: 1.2rem; color: var(--ink-soft); }
+.upgrades li { margin-bottom: 0.4rem; }
+.upgrades strong { color: var(--ink); }
+
+.chart-card { margin-bottom: 1rem; }
+.chart-head { display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
+/* A visible chart title gets its own line; range buttons start under it at the left edge */
+.chart-head-titled > h2 { flex: 1 0 100%; margin-bottom: 0; }
+.chart-tools { display: flex; align-items: center; gap: 0.4rem; margin-left: auto; }
+.tab-ma::before { content: ""; display: inline-block; width: 14px; height: 0; margin-right: 6px; vertical-align: middle; border-top: 2px dashed var(--ma, currentColor); }
+.tab-ma[data-ma="50"] { --ma: rgba(250, 250, 250, 0.75); }
+.tab-ma[data-ma="200"] { --ma: #7fb3ff; }
+.tab-ma[aria-pressed="true"]::before { border-top-color: #0a0a0a; }
+.chart-tip-ma { color: var(--ink-soft); font-size: 0.75rem; }
+.chart-tip-ma[hidden] { display: none; }
+.tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tab { font: inherit; font-family: var(--cyber); font-weight: 400; font-size: 0.6875rem; letter-spacing: 0.06em; color: var(--ink-soft); background: transparent; border: 0; border-radius: 4px; padding: 6px 10px; min-height: 32px; cursor: pointer; }
+.tab:hover { color: var(--ink); }
+.tab[aria-pressed="true"] { color: #0a0a0a; background: var(--gold); }
+.plot { position: relative; width: 100%; min-height: 320px; overflow: hidden; } /* every chart is 320 px tall: hold it before the data */
+
+/* Chart overlays: dashed crosshair, hover tooltip, current-value tag */
+.uplot .u-cursor-x { border-right: 1px dashed rgba(255, 255, 255, 0.35); }
+.uplot .u-cursor-y { border-bottom: 1px dashed rgba(255, 255, 255, 0.35); }
+/* Sideways finger drags move the chart cursor (chart-common.js); vertical swipes scroll the page */
+.plot .u-over { touch-action: pan-y; }
+.chart-tip, .chart-tag { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; }
+.chart-tip {
+  display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; font-size: 0.75rem; line-height: 1.35; white-space: nowrap;
+  background: rgba(12, 12, 14, 0.94); border: 1px solid rgba(234, 180, 72, 0.45); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5); color: var(--ink-soft);
+}
+.chart-tip[hidden], .chart-tag[hidden] { display: none; }
+.chart-tip-value { color: var(--ink); font-size: 0.8125rem; }
+.chart-tip-date { color: var(--ink-faint); }
+.chart-tag { padding: 2px 6px; border-radius: 3px; background: var(--gold); color: #0a0a0a; font-size: 0.6875rem; line-height: 1.4; white-space: nowrap; }
+@media (max-width: 699px) { .chart-tag { font-size: 0.625rem; padding: 2px 4px; letter-spacing: 0; } } /* phones: the tag sets the axis width, keep it compact */
+.chart-empty { color: var(--ink-faint); padding: 2rem 0; text-align: center; }
+.chart-summary, .chart-note, .chart-ma-note { color: var(--ink-faint); font-size: 0.875rem; margin: 0.6rem 0 0; }
+.chart-summary:empty::before { content: "\a0"; } /* hold its line before the chart's data */
+
+.counters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 1.5rem; padding: 0.4rem 0; }
+.counter { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 0.3rem; min-width: 0; padding: 0.4rem 1.2rem; margin: 0; }
+.counter + .counter { border-left: 1px solid var(--edge); }
+.counter:first-child { padding-left: 0; }
+.counter dt { margin: 0; }
+/* Dashboard and Nodes number strips on desktop: each number and label centred in its column */
+@media (min-width: 700px) {
+  .counters-centered .counter { align-items: center; text-align: center; }
+  .counters-centered .counter:first-child { padding-left: 1.2rem; }
+}
+.counter dd { margin: 0; font-weight: 700; letter-spacing: -0.02em; font-size: clamp(1.5rem, 3vw, 1.75rem); line-height: 1.1; color: var(--ink); overflow-wrap: break-word; }
+.prose { max-width: 42rem; font-size: 0.9375rem; }
+.card.prose { max-width: none; }
+.card.prose h2 { margin-top: 0; font-size: 0.6875rem; color: var(--ink-faint); line-height: 1.2; } /* same title style as every other card */
+.card.prose p:last-child, .card.prose ul:last-child { margin-bottom: 0; }
+.card.prose ul { margin-top: 0; }
+/* About: phones read top to bottom (intro first); desktop puts the long sources card on the
+   left and the four short cards on the right, the last row stretching so both columns end level */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-bottom: 2rem; }
+@media (min-width: 1000px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "sources intro" "sources check" "sources privacy" "sources disclaimer";
+  }
+  .about-intro { grid-area: intro; } .about-sources { grid-area: sources; } .about-check { grid-area: check; }
+  .about-privacy { grid-area: privacy; } .about-disclaimer { grid-area: disclaimer; }
+}
+.prose p, .prose li { color: var(--ink-soft); }
+.prose ul { padding-left: 1.2rem; }
+.prose li { margin-bottom: 0.5rem; }
+.prose li::marker { color: var(--gold); }
+.prose code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; color: var(--gold); background: rgba(255, 255, 255, 0.05); padding: 1px 5px; border-radius: 4px; }
+.footer { color: var(--ink-faint); font-size: 0.8125rem; padding-block: 2rem 3rem; border-top: 1px solid var(--edge); }
+.footer p { margin: 0 0 0.5rem; }
+
+@media (max-width: 1099px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 699px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .price-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 1rem; }
+  .price-stats div, .chart-stats div, .chart-stats div:first-child { padding: 0; border-left: 0; }
+  .price-stats dd, .chart-stats dd, .chart-stats dt { white-space: normal; overflow-wrap: anywhere; }
+  .chart-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 1rem; }
+  /* Each stat spans a label row and a value row shared with its neighbour (subgrid), so a
+     two-line label never pushes its value below the one beside it. */
+  .price-stats div, .chart-stats div { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0.3rem; }
+  .price-stats dt, .chart-stats dt { align-self: end; }
+  .price-stats dd, .chart-stats dd { align-self: start; }
+  .price-top, .price-chart .chart-head, .price-chart .chart-note, .price-chart .chart-ma-note { padding-inline: 16px; }
+  .source-line { padding-inline: 16px; }
+  .fig { margin-inline: 16px; }
+  .tabs { gap: 2px; }
+  .tab { padding-inline: 5px; min-width: 32px; }
+  /* Chart range buttons fit one row: spread edge to edge, slimmer padding */
+  .price-chart .tabs, .chart-card .tabs:has(> .tab:nth-child(6)) { flex: 1 1 100%; flex-wrap: nowrap; justify-content: space-between; gap: 0; }
+  .price-chart .tab, .chart-card .tabs:has(> .tab:nth-child(6)) .tab { padding-inline: 3px; min-width: 0; }
+  .counters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 0; }
+  .counter { padding-inline: 0 0; }
+  .counter:nth-child(even) { padding-left: 0.8rem; }
+  .counter:nth-child(odd) { border-left: 0; }
+  .counter dd { font-size: 1.4rem; white-space: nowrap; }
+  .nav { gap: 0.9rem; }
+}
+@media (max-width: 360px) {
+  .price-chart .tab { font-size: 0.625rem; letter-spacing: 0.02em; padding-inline: 2px; }
+  .chart-card .tabs { flex-wrap: wrap !important; } /* very narrow phones: long range rows may wrap */
+  .nav { column-gap: 0.5rem; }
+  .nav a { font-size: 0.625rem; letter-spacing: 0.02em; }
+  .row dd { white-space: normal; } /* too narrow to keep long values on one line */
+  .card table { font-size: 0.75rem; }
+  .card td.num { font-size: 0.625rem; letter-spacing: 0; }
+  .card th { font-size: 0.5625rem; letter-spacing: 0.02em; }
+  .card th, .card td { padding-inline: 0.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.prose h2 { font-size: 0.8125rem; color: var(--ink); margin-top: 1.6rem; line-height: 1.5; }
+
+/* Michroma numbers (owner choice) */
+.num, .hero-price.num, .counter dd, .row dd, .price-stats dd, .chart-stats dd, td.num { font-family: var(--cyber); font-weight: 400; letter-spacing: 0.01em; }
+.hero-price.num { font-size: clamp(1.75rem, 4vw, 2.25rem); letter-spacing: 0.02em; }
+.counter dd { font-size: clamp(1.15rem, 2.4vw, 1.4rem); }
+.row dd, .price-stats dd, .chart-stats dd { font-size: 0.8125rem; }
+td.num { font-size: 0.75rem; }
+
+.change-period { font-family: var(--cyber); font-size: 0.625rem; letter-spacing: 0.08em; color: var(--ink-faint); margin-left: 0.35rem; }
+
+/* Nodes page */
+.swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 0.55rem; vertical-align: 0.05em; }
+/* Cards with a summary bar: the bar sits on the card's bottom edge */
+.grid > .card:has(> .leds) { display: flex; flex-direction: column; }
+.grid > .card > .leds { margin-top: auto; flex: none; }
+.grid > .card:has(> .leds) > dl { margin-bottom: 1rem; }
+[data-sync="tip"], .leds i.tip { background: var(--gold); }
+[data-sync="near"], .leds i.near { background: var(--gold-lo); }
+[data-sync="day"], .leds i.day { background: #5e4a22; }
+[data-sync="behind"], .leds i.behind { background: rgba(255, 255, 255, 0.3); }
+.versions .pool { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; padding: 0.4rem 0; }
+.versions .leds { grid-column: 1 / -1; }
+/* Narrow pool lists (dashboard card, Mining on phones): the LED bar gets its own full-width
+   line under the name and share, like node versions, so small shares still read apart. */
+.pools.stacked .pool { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; padding: 0.35rem 0; }
+.pools.stacked .leds { grid-row: 2; grid-column: 1 / -1; }
+@media (max-width: 699px) {
+  #pools-week .pool { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; padding: 0.35rem 0; }
+  #pools-week .leds { grid-row: 2; grid-column: 1 / -1; }
+}
+.version-label { display: flex; align-items: center; gap: 0.45rem; min-width: 0; }
+.counter-lock dt { color: var(--up); } /* green, like the coinbase-lock line and tags */
+.tag-enforcing {
+  flex: none; font-family: var(--cyber); font-size: 0.5625rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4;
+  color: var(--up); border: 1px solid rgba(108, 192, 74, 0.55); border-radius: 3px; padding: 1px 5px;
+}
+.chart-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; list-style: none; margin: 0 0 0 auto; padding: 0; font-size: 0.75rem; color: var(--ink-faint); }
+.legend-key { display: inline-block; width: 16px; height: 0; margin-right: 6px; vertical-align: middle; border-top: 2px solid var(--gold); }
+.legend-key[data-line="enforcing"] { border-top-color: #6cc04a; }
+.legend-key[data-line="known"] { border-top: 2px dashed rgba(250, 250, 250, 0.6); }
+.credit { color: var(--ink-faint); font-size: 0.8125rem; margin: 0 0 2rem; max-width: 60rem; }
+.version-label .pool-name { min-width: 0; }
+.versions .version-label { flex-wrap: wrap; row-gap: 0.2rem; }
+.versions .pool-name { white-space: normal; overflow-wrap: anywhere; }
+
+/* Converter */
+.convert-card { max-width: 40rem; margin-bottom: 1rem; }
+.world-card { margin-bottom: 1rem; min-width: 0; }
+.world-table th[scope="row"] { font-family: var(--body); font-size: 0.9375rem; text-transform: none; letter-spacing: 0; color: var(--ink); font-weight: 400; }
+.world-code { color: var(--ink-faint); }
+.fiat-sym { font-family: var(--body); font-weight: 500; }
+.world-table td { font-size: 0.875rem; color: var(--ink); white-space: nowrap; }
+.world-source { margin: 0.6rem 0 0; }
+@media (max-width: 699px) {
+  .world-table th[scope="row"] { font-size: 0.8125rem; }
+  .world-table td { font-size: 0.75rem; padding-left: 0.6rem; }
+}
+/* Desktop: world currencies on the left; exchanges, averages and converter on the right */
+.markets-card, .ma-card { margin-bottom: 1rem; min-width: 0; }
+.markets-table th[scope="row"] { font-family: var(--body); font-size: 0.9375rem; text-transform: none; letter-spacing: 0; color: var(--ink); font-weight: 400; white-space: nowrap; }
+.markets-table td { font-size: 0.875rem; color: var(--ink); white-space: nowrap; }
+.market-link { color: var(--ink); text-decoration: none; }
+.market-link:hover { color: var(--gold); text-decoration: underline; }
+.market-arrow { color: var(--gold); }
+.market-mark { color: var(--gold); margin-left: 2px; }
+.markets-note { margin: 0.6rem 0 0; }
+.markets-table td.book-none { text-align: center; color: var(--ink-faint); }
+@media (min-width: 1000px) {
+  /* Both columns stretch to the taller one; the last card on the right takes up any
+     difference, so the two columns always end on the same line */
+  .convert-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-areas: "world side"; column-gap: 14px; align-items: stretch; margin-bottom: 1rem; }
+  .world-card { grid-area: world; margin-bottom: 0; }
+  .convert-side { grid-area: side; min-width: 0; display: flex; flex-direction: column; }
+  .convert-side > .card:last-child { flex: 1 0 auto; margin-bottom: 0; }
+  .convert-grid .convert-card { max-width: none; }
+}
+@media (max-width: 699px) {
+  .markets-table th[scope="row"] { font-size: 0.8125rem; white-space: normal; }
+  .markets-table th, .markets-table td { padding-inline: 0.15rem; }
+  .markets-table td { font-size: 0.6875rem; letter-spacing: 0; }
+  /* bid over ask, so four columns fit a phone */
+  .markets-table .book-side { display: block; }
+  .markets-table .book-sep { display: none; }
+}
+.convert-fields { display: grid; gap: 14px; margin-bottom: 8px; }
+.convert-field { display: flex; flex-direction: column; gap: 6px; }
+.convert-field label { font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+.convert-input {
+  width: 100%; min-height: 52px; padding: 10px 14px; font-size: 1.25rem; color: var(--ink); background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--edge); border-radius: 8px; text-align: right;
+}
+.convert-input:hover:not(:disabled) { border-color: var(--gold-lo); }
+.convert-input:disabled { opacity: 0.5; }
+/* One field style for both calculators (Converter and Mining): 36px fields, 15px numbers on
+   desktop; 16px / 42px on phones, where anything under 16px makes iPhones zoom in on tap */
+.convert-card .convert-input, .mining-calc .convert-input { font-size: 0.9375rem; min-height: 36px; padding: 5px 12px; }
+.convert-card .convert-fields, .mining-calc .mining-fields { gap: 10px; }
+.convert-card .convert-field, .mining-calc .convert-field { gap: 4px; }
+.mining-calc .mining-hash { gap: 8px; }
+@media (max-width: 699px) { .convert-card .convert-input, .mining-calc .convert-input { font-size: 1rem; min-height: 42px; padding: 6px 12px; } } /* same field size on both calculators */
+.convert-msg { min-height: 1.5em; margin: 0 0 8px; font-size: 0.8125rem; color: var(--warn); }
+.convert-msg:empty { min-height: 0; margin: 0; } /* room only while there's a message */
+@media (max-width: 699px) { .convert-rate { min-height: 2lh; } } /* the rate line is two lines on phones: hold them before the price */
+.convert-rate { margin: 0; font-size: 0.6875rem; line-height: 1.7; color: var(--ink-faint); overflow-wrap: anywhere; }
+
+/* Mining calculator */
+.mining-card { margin-bottom: 1rem; min-width: 0; }
+.mining-grid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 14px; }
+@media (min-width: 1000px) {
+  /* Network numbers on the left; the calculator with its results below on the right */
+  .mining-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "net calc" "net earn"; grid-template-rows: auto 1fr; align-items: start; }
+  .mining-grid .mining-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); } /* power, electricity, pool fee on one row */
+  .mining-calc { grid-area: calc; } .mining-earn { grid-area: earn; align-self: stretch; } .mining-net { grid-area: net; }
+  .mining-grid > .mining-card:is(.mining-net, .mining-earn) { margin-bottom: 0; } /* both columns end on the same line */
+  .mining-grid { margin-bottom: 1rem; }
+}
+.mining-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 8px; }
+.mining-fields .convert-field:first-child { grid-column: 1 / -1; }
+.mining-hash { display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem; gap: 8px; }
+select.convert-input { text-align: left; cursor: pointer; font-family: var(--cyber); font-size: 1rem; } /* 16px+: iPhones zoom in on smaller fields */
+.mining-table th, .mining-table td { padding-inline: 0.3rem; }
+.mining-table th[scope="row"] { font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.04em; font-weight: 400; color: var(--ink-soft); }
+.mining-table thead th { vertical-align: bottom; overflow-wrap: anywhere; }
+.mining-note { margin: 0.6rem 0 0; }
+@media (max-width: 560px) {
+  /* Phones: each period becomes its own block of label/value rows. */
+  .mining-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mining-table, .mining-table tbody, .mining-table tr, .mining-table th, .mining-table td { display: block; width: 100%; }
+  .mining-table tr { padding: 0.5rem 0; border-bottom: 1px solid var(--edge); }
+  .mining-table tr:last-child { border-bottom: 0; padding-bottom: 0; }
+  .mining-table th[scope="row"] { border: 0; padding: 0.2rem 0; color: var(--gold); }
+  .mining-table td.num { display: flex; justify-content: space-between; gap: 1rem; border: 0; padding: 0.2rem 0; text-align: right; }
+  .mining-table td.num::before { content: attr(data-label); font-family: var(--body); color: var(--ink-soft); text-align: left; }
+}
+@media (max-width: 420px) { .mining-fields { grid-template-columns: minmax(0, 1fr); } }
+
+/* Card title with a right-aligned column label (e.g. "Share · Blocks" over the pool numbers) */
+.pools-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.pools-col { font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; }
+.pool[hidden] { display: none; }
+
+/* Mining pools card: title and 24H/7D tabs on top; phones stack the pie above the list,
+   wide screens put the pie beside it. */
+.mining-pools { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title tabs" "pie pie" "list list"; gap: 0.6rem 2rem; align-items: center; }
+.pools-title { grid-area: title; margin: 0; }
+.pools-tabs { grid-area: tabs; justify-self: end; }
+.pools-list { grid-area: list; align-self: start; }
+.pools-list .pools-head { justify-content: flex-end; }
+.mining-pools .pool { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 9rem; } /* room for 30 days: "33.4% · 1,728" */
+@media (max-width: 439px) { .mining-pools .pool { grid-template-columns: minmax(0, 6rem) minmax(0, 1fr) 8.5rem; } }
+.pool-pie { grid-area: pie; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+/* Hold the pie's size before pool-pie.js measures it (same sums: ring up to 301 px plus label
+   room each side, 112 px from 440 px wide, 74 px below; 20 px for the canvas offset). */
+.pool-pie { container-type: inline-size; }
+.pie-stage { height: clamp(139px, 100cqw - 224px + 20px, 321px); width: calc(clamp(119px, 100cqw - 224px, 301px) + 224px); }
+.pie-stage canvas { width: 0; height: 0; } /* sized by pool-pie.js; never the browser's default 300 x 150 first */
+.pie-centre { font-size: clamp(11px, (100cqw - 224px) / 15, 20px); }
+@container (max-width: 439px) {
+  .pie-stage { height: clamp(139px, 100cqw - 148px + 20px, 321px); width: calc(clamp(119px, 100cqw - 148px, 301px) + 148px); }
+  .pie-centre { font-size: clamp(11px, (100cqw - 148px) / 15, 20px); }
+}
+.pool-pie[hidden] { display: none; }
+@media (min-width: 900px) {
+  .mining-pools { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-areas: "title tabs" "list pie"; }
+  .pool-pie { align-self: start; }
+}
+.pie-stage { position: relative; max-width: 100%; }
+.pie-stage canvas { position: absolute; top: 10px; image-rendering: pixelated; touch-action: none; }
+.pie-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.pie-stage text { font-family: var(--body); font-size: 12px; fill: var(--ink-soft); }
+.pie-leader { fill: none; stroke: rgba(234, 180, 72, 0.55); stroke-width: 1; }
+.pie-centre { position: absolute; inset: 10px 0 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+.pie-centre strong { font-family: var(--cyber); font-weight: 400; font-size: 1em; color: var(--ink); }
+.pie-centre span { font-family: var(--cyber); font-size: max(8px, 0.5em); letter-spacing: 0.1em; color: var(--gold); }
+.pie-tip { position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 2px; max-width: 16rem; padding: 6px 9px; border: 1px solid var(--edge); border-radius: 6px; background: rgba(8, 8, 8, 0.94); color: var(--ink); font-size: 0.8125rem; pointer-events: none; white-space: nowrap; }
+.pie-tip span + span { color: var(--ink-faint); }
+.pie-tip[hidden] { display: none; }
+.pie-key { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1rem; margin: 0.4rem 0 0; font-size: 0.8125rem; color: var(--ink-soft); }
+.pie-key[hidden] { display: none; }
+.pie-sw { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.pie-sw-datum { background: var(--gold); }
+.pie-sw-stratum { background: #a8aeb6; }
+@media (max-width: 439px) { .pie-stage text { font-size: 11px; } }
+.list-more { font: inherit; font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); background: transparent; border: 1px solid var(--edge); border-radius: 4px; padding: 6px 12px; min-height: 32px; margin-top: 0.6rem; cursor: pointer; }
+.list-more.ghost { visibility: hidden; } /* holds the button's room until the list loads */
+.ghost-text { visibility: hidden; } /* loading stand-ins: real-width text that holds a table's layout */
+.list-more:hover { border-color: var(--gold); }
+
+/* Page not found: gold code shimmer (not-found.js) behind a big LED 404 */
+.nf { position: relative; height: clamp(420px, 68vh, 640px); margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--edge); border-radius: var(--radius); background: #050505; }
+.nf-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.nf-msg { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px; text-align: center; }
+.nf-led { display: block; max-width: 100%; }
+h1.nf-term {
+  margin: 0; padding: 4px 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8125rem; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-soft);
+  background: rgba(5, 5, 5, 0.8); -webkit-background-clip: border-box; background-clip: border-box;
+}
+h1.nf-term b { color: var(--gold); font-weight: 400; }
+.nf-sub { margin: 0; padding: 2px 10px; font-size: 0.875rem; color: var(--ink-soft); background: rgba(5, 5, 5, 0.7); }
+.nf-btn {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px; border-radius: 4px; background: var(--gold); color: #0a0a0a;
+  font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+}
+.nf-btn:hover { background: var(--gold-hi); }
+
+/* Donation card (dashboard bottom): text and address on the left, QR on the right */
+.donate { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-bottom: 2rem; }
+.about-grid:has(+ .network-history) { margin-bottom: 14px; } /* same gap as between the About cards */
+.about-grid + .network-history { margin-bottom: 14px; }
+.about-status { margin-bottom: 2rem; }
+.donate-text { flex: 1 1 22rem; min-width: 0; }
+.donate-text p { margin: 0 0 0.7rem; color: var(--ink-soft); max-width: 46rem; }
+.donate-text .donate-warn { font-size: 0.8125rem; color: var(--gold); font-weight: 600; } /* whole line in gold */
+.donate-addr { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 0.2rem; }
+.donate-addr code {
+  /* wide enough to show a whole address on one line (44ch: 42-char bc1q, longer bc1p still fits), so it can be checked */
+  min-width: min(100%, 44ch); white-space: nowrap;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.875rem; color: var(--ink); overflow-wrap: anywhere;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--edge); border-radius: 6px; padding: 8px 12px;
+}
+.donate[data-state="pending"] .donate-addr code { color: var(--ink-faint); font-style: italic; }
+.donate-copy {
+  font: inherit; font-family: var(--cyber); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; min-height: 36px; padding: 6px 14px;
+  color: #0a0a0a; background: var(--gold); border: 0; border-radius: 4px; cursor: pointer;
+}
+.donate-copy:disabled { background: rgba(255, 255, 255, 0.08); color: var(--ink-faint); cursor: default; }
+.donate-qr { flex: none; border-radius: 6px; }
+@media (max-width: 699px) { .donate-addr code { white-space: normal; flex: 1 1 100%; } } /* phones: the full address wraps inside the box */
+
+/* "What's in your block?" card: a block map (one tile per transaction, sized by its share of
+   the block) beside the facts on wider screens, above them on phones. */
+.block-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 10px; font-size: 0.875rem; color: var(--ink-soft); }
+.block-legend span::before { content: ""; display: inline-block; width: 11px; height: 11px; margin-right: 7px; vertical-align: -1px; background: var(--gold); }
+.block-legend span.d::before { background: var(--ink); }
+.block-body { display: grid; gap: 12px; }
+.block-map { display: block; margin: 0 auto; } /* width and height set in whole LEDs by block-card.js */
+.block-body.beside { grid-template-columns: minmax(0, 150px) minmax(250px, 1fr); gap: 16px; } /* block-card.js decides: beside only when both fit */
+.block-body.beside .block-map { margin: 0; }
+.block-facts .row { padding: 5px 0; }
+.block-card .row.block-share { border-bottom: 0; padding-bottom: 6px; align-items: center; }
+.block-card .row.block-share dd { font-size: clamp(1.15rem, 2.4vw, 1.4rem); line-height: 1.1; color: var(--ink); } /* counters-row size; white like OP_RETURN data in the legend */
+.ledbar { display: flex; gap: 1px; margin: 2px 0 6px; } /* the price chart's LED blocks: 5 px squares on a 6 px grid */
+.ledbar i { flex: none; width: 5px; height: 5px; position: relative; background: rgba(251, 204, 92, 0.8); }
+.ledbar i.d { background: var(--ink); box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); }
+.ledbar .tick { position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--ink); box-shadow: 0 0 4px rgba(255, 255, 255, 0.9); }

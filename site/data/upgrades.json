@@ -1,0 +1,4 @@
+[
+  { "height": 961632, "date": "2026-08-08", "title": "Chain split", "text": "Nodes enforcing BIP-110 part ways with the SHA-256 chain." },
+  { "height": 961640, "date": "2026-08-30", "title": "BLAKE2b proof of work", "text": "Mining switches from SHA-256d to BLAKE2b." }
+]

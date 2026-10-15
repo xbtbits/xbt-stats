@@ -1,0 +1,8 @@
+{
+  "v": 1,
+  "generatedAt": 1791660030000,
+  "flags": { "usedFallback": false, "sourcesDisagree": false, "marketsDisagree": false },
+  "sources": { "chain": null, "crossCheck": null, "errors": ["mempool.guide: timeout", "mempool.kilombino.com: timeout"] },
+  "chain": null, "difficulty": null, "mining": null, "pools": null, "fees": null,
+  "mempool": null, "halving": null, "supply": null, "price": null
+}

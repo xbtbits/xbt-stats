@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Charts · XBT Stats</title>
+  <meta name="description" content="XBT charts: hashrate, difficulty, fees, mempool and block size since the BLAKE2b switch.">
+  <link rel="canonical" href="https://xbtstats.com/charts">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="Charts · XBT Stats">
+  <meta property="og:description" content="XBT charts: hashrate, difficulty, fees, mempool and block size since the BLAKE2b switch.">
+  <meta property="og:url" content="https://xbtstats.com/charts">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="stylesheet" href="/vendor/uPlot.min.css">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script src="/vendor/uPlot.iife.min.js" defer></script>
+  <script type="module" src="/js/charts.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">Dashboard</a>
+      <a href="/charts" aria-current="page">Charts</a>
+      <a href="/nodes">Nodes</a>
+      <a href="/mining">Mining</a>
+      <a href="/convert">Converter</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1>Charts</h1>
+    <p class="muted">Chain charts start at the BLAKE2b switch (block 961,640, Aug 30, 2026).</p>
+
+    <section class="card chart-card" data-series="hashrate" aria-labelledby="c-hashrate">
+      <h2 id="c-hashrate" class="sr-only">Hashrate</h2>
+      <dl class="chart-stats" data-stats="hashrate">
+        <div><dt>Hashrate (current)</dt><dd class="num">—</dd></div>
+        <div><dt>Hash price</dt><dd class="num">—</dd></div>
+        <div><dt>Blocks (24h)</dt><dd class="num">—</dd></div>
+        <div><dt>Largest pool (24h)</dt><dd class="num">—</dd></div>
+      </dl>
+      <div class="chart-head">
+        <div class="tabs" role="group" aria-label="Hashrate chart range">
+          <button class="tab" type="button" data-range="1d" aria-pressed="false">1D</button>
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="true">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+        </div>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+
+    <section class="card chart-card" data-series="difficulty" aria-labelledby="c-difficulty">
+      <h2 id="c-difficulty" class="sr-only">Difficulty</h2>
+      <dl class="chart-stats" data-stats="difficulty">
+        <div><dt>Difficulty</dt><dd class="num">—</dd></div>
+        <div><dt>Epoch</dt><dd class="num">—</dd></div>
+        <div><dt>Epoch progress</dt><dd class="num">—</dd></div>
+        <div><dt>Retarget block</dt><dd class="num">—</dd></div>
+        <div><dt>Blocks to retarget</dt><dd class="num">—</dd></div>
+        <div><dt>Retarget ETA</dt><dd class="num">—</dd></div>
+        <div><dt>Estimated change</dt><dd class="num">—</dd></div>
+        <div><dt>Previous change</dt><dd class="num">—</dd></div>
+      </dl>
+      <div class="chart-head">
+        <div class="tabs" role="group" aria-label="Difficulty chart range">
+          <button class="tab" type="button" data-range="1d" aria-pressed="false">1D</button>
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="true">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+        </div>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+
+    <section class="card chart-card" data-series="fees" aria-labelledby="c-fees">
+      <h2 id="c-fees" class="sr-only">Average fees per block</h2>
+      <dl class="chart-stats" data-stats="fees">
+        <div><dt>Avg fees per block</dt><dd class="num">—</dd></div>
+        <div><dt>Total fees (144 blocks)</dt><dd class="num">—</dd></div>
+        <div><dt>Fees vs reward</dt><dd class="num">—</dd></div>
+        <div><dt>Block subsidy value</dt><dd class="num">—</dd></div>
+      </dl>
+      <div class="chart-head">
+        <div class="tabs" role="group" aria-label="Fees chart range">
+          <button class="tab" type="button" data-range="1d" aria-pressed="false">1D</button>
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="true">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+        </div>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+
+    <section class="card chart-card" data-series="mempool" aria-labelledby="c-mempool">
+      <h2 id="c-mempool" class="sr-only">Mempool size</h2>
+      <dl class="chart-stats" data-stats="mempool">
+        <div><dt>Pending txs</dt><dd class="num">—</dd></div>
+        <div><dt>Mempool size</dt><dd class="num">—</dd></div>
+        <div><dt>Blocks to clear</dt><dd class="num">—</dd></div>
+        <div><dt>Next block</dt><dd class="num">—</dd></div>
+        <div><dt>30 min</dt><dd class="num">—</dd></div>
+        <div><dt>1 hour</dt><dd class="num">—</dd></div>
+      </dl>
+      <div class="chart-head">
+        <div class="tabs" role="group" aria-label="Mempool chart range">
+          <button class="tab" type="button" data-range="1d" aria-pressed="false">1D</button>
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="true">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+        </div>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+    <section class="card chart-card" data-series="blocksize" aria-labelledby="c-blocksize">
+      <h2 id="c-blocksize" class="sr-only">Block size</h2>
+      <dl class="chart-stats" data-stats="blocksize">
+        <div><dt>Avg block size</dt><dd class="num">—</dd></div>
+        <div><dt>Txs in last block</dt><dd class="num">—</dd></div>
+        <div><dt>Avg txs per block</dt><dd class="num">—</dd></div>
+      </dl>
+      <div class="chart-head">
+        <div class="tabs" role="group" aria-label="Block size chart range">
+          <button class="tab" type="button" data-range="1d" aria-pressed="false">1D</button>
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="true">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+        </div>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Not financial advice. Data is provided as is. <a href="/about">About and sources</a>. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>

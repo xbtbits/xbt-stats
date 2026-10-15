@@ -1,0 +1,21 @@
+{
+  "name": "xbt-stats",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test --disable-warning=ExperimentalWarning \"test/unit/**/*.test.js\"",
+    "test:browser": "playwright test",
+    "serve:fixtures": "node test/browser/server.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "smoke:live": "node scripts/smoke-live.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "uplot": "1.6.32",
+    "wrangler": "4.141.0"
+  }
+}

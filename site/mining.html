@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mining · XBT Stats</title>
+  <meta name="description" content="Estimate XBT mining earnings, power cost and profit from your hashrate at today's network numbers.">
+  <link rel="canonical" href="https://xbtstats.com/mining">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="Mining · XBT Stats">
+  <meta property="og:description" content="Estimate XBT mining earnings, power cost and profit from your hashrate at today's network numbers.">
+  <meta property="og:url" content="https://xbtstats.com/mining">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script type="module" src="/js/mining.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">Dashboard</a>
+      <a href="/charts">Charts</a>
+      <a href="/nodes">Nodes</a>
+      <a href="/mining" aria-current="page">Mining</a>
+      <a href="/convert">Converter</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="notice" id="notice-offline" hidden role="status"><span class="notice-text"></span></div>
+
+    <h1>Mining</h1>
+    <p class="muted">Estimate what your hashrate could earn at today’s network numbers.</p>
+
+    <section class="card chart-card mining-pools" aria-labelledby="c-pools">
+      <h2 id="c-pools" class="pools-title">Mining pools</h2>
+      <div class="tabs pools-tabs" role="group" aria-label="Mining pools range">
+        <button class="tab" type="button" data-range="1d" aria-pressed="true">24H</button>
+        <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+        <button class="tab" type="button" data-range="1m" aria-pressed="false">30D</button>
+      </div>
+      <div class="pools-list">
+        <div class="pools-head"><span class="pools-col" aria-hidden="true">Share · Blocks</span></div>
+        <ul class="pools" id="pools-week">
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+        </ul>
+        <button class="list-more ghost" type="button" disabled tabindex="-1">Show all</button>
+        <p class="chart-summary" id="pools-week-summary" aria-live="polite">Loading pool data…</p>
+      </div>
+      <div class="pool-pie" id="pools-pie">
+        <div class="pie-stage" aria-hidden="true">
+          <canvas></canvas><svg></svg>
+          <div class="pie-centre"><strong></strong><span>DATUM</span></div>
+          <div class="pie-tip" hidden></div>
+        </div>
+        <p class="pie-key" aria-hidden="true"><span><i class="pie-sw pie-sw-datum"></i>DATUM (miner built)</span><span><i class="pie-sw pie-sw-stratum"></i>Stratum (pool built)</span></p>
+        <p class="sr-only pie-summary"></p>
+      </div>
+    </section>
+
+    <div class="mining-grid">
+    <section class="card mining-card mining-calc" aria-labelledby="h-calc">
+      <h2 id="h-calc">Mining calculator</h2>
+      <div class="mining-fields">
+        <div class="convert-field">
+          <label for="in-hash">Hashrate</label>
+          <div class="mining-hash">
+            <input id="in-hash" class="convert-input num" type="text" inputmode="decimal" autocomplete="off" value="10">
+            <select id="in-unit" class="convert-input num" aria-label="Hashrate unit">
+              <option value="GH/s">GH/s</option>
+              <option value="TH/s" selected>TH/s</option>
+              <option value="PH/s">PH/s</option>
+            </select>
+          </div>
+        </div>
+        <div class="convert-field">
+          <label for="in-power">Power (W)</label>
+          <input id="in-power" class="convert-input num" type="text" inputmode="decimal" autocomplete="off" value="3,000">
+        </div>
+        <div class="convert-field">
+          <label for="in-kwh">Electricity ($/kWh)</label>
+          <input id="in-kwh" class="convert-input num" type="text" inputmode="decimal" autocomplete="off" value="0.08">
+        </div>
+        <div class="convert-field">
+          <label for="in-fee">Pool fee (%)</label>
+          <input id="in-fee" class="convert-input num" type="text" inputmode="decimal" autocomplete="off" value="1">
+        </div>
+      </div>
+      <p class="convert-msg" id="mining-msg" role="status"></p>
+    </section>
+
+    <section class="card mining-card mining-earn" aria-labelledby="h-earn">
+      <h2 id="h-earn">Estimated earnings</h2>
+      <table class="mining-table">
+        <thead>
+          <tr><th scope="col">Period</th><th scope="col" class="num">XBT</th><th scope="col" class="num">Revenue (USD)</th><th scope="col" class="num">Power cost</th><th scope="col" class="num">Profit</th></tr>
+        </thead>
+        <tbody id="earn-body">
+          <tr><th scope="row">Day</th><td class="num" data-label="XBT">—</td><td class="num" data-label="Revenue (USD)">—</td><td class="num" data-label="Power cost">—</td><td class="num" data-label="Profit">—</td></tr>
+          <tr><th scope="row">Week</th><td class="num" data-label="XBT">—</td><td class="num" data-label="Revenue (USD)">—</td><td class="num" data-label="Power cost">—</td><td class="num" data-label="Profit">—</td></tr>
+          <tr><th scope="row">Month (30 d)</th><td class="num" data-label="XBT">—</td><td class="num" data-label="Revenue (USD)">—</td><td class="num" data-label="Power cost">—</td><td class="num" data-label="Profit">—</td></tr>
+          <tr><th scope="row">Year (365 d)</th><td class="num" data-label="XBT">—</td><td class="num" data-label="Revenue (USD)">—</td><td class="num" data-label="Power cost">—</td><td class="num" data-label="Profit">—</td></tr>
+        </tbody>
+      </table>
+      <p class="muted mining-note" id="halving-note" hidden></p>
+      <p class="muted mining-note">After the next retarget, earnings shift by roughly the difficulty change. Periods that cross the next halving use the lower reward for the days after it; when the halving happens, the block reward in Network inputs updates on its own.</p>
+    </section>
+
+    <section class="card mining-card mining-net" aria-labelledby="h-net">
+      <h2 id="h-net">Network inputs</h2>
+      <dl class="stats">
+        <div class="row"><dt>Network hashrate</dt><dd class="num" data-k="net-hashrate">—</dd></div>
+        <div class="row"><dt>Block reward (subsidy)</dt><dd class="num" data-k="net-subsidy">—</dd></div>
+        <div class="row"><dt>Average fees per block</dt><dd class="num" data-k="net-fees">—</dd></div>
+        <div class="row"><dt>Average block time</dt><dd class="num" data-k="net-block">—</dd></div>
+        <div class="row"><dt>XBT price</dt><dd class="num" data-k="net-price">—</dd></div>
+        <div class="row"><dt>Your share of network</dt><dd class="num" data-k="net-share">—</dd></div>
+        <div class="row"><dt>Expected time to find a block solo</dt><dd class="num" data-k="net-solo">—</dd></div>
+        <div class="row"><dt>Next difficulty change (estimated)</dt><dd class="num" data-k="net-diff">—</dd></div>
+        <div class="row"><dt>Halving block</dt><dd class="num" data-k="net-halving">—</dd></div>
+        <div class="row"><dt>Estimated halving date</dt><dd class="num" data-k="net-halving-date">—</dd></div>
+        <div class="row"><dt>Time until halving</dt><dd class="num" data-k="net-halving-in">—</dd></div>
+        <div class="row"><dt>Block reward after halving</dt><dd class="num" data-k="net-subsidy-after">—</dd></div>
+      </dl>
+    </section>
+    </div>
+
+    <p class="credit">Estimates only: assumes today’s network hashrate, fees, block time and price stay constant. Mining rewards vary.</p>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Not financial advice. Data is provided as is. <a href="/about">About and sources</a>. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>

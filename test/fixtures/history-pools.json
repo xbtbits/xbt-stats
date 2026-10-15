@@ -1,0 +1,1 @@
+{ "series": "pools", "range": "1d", "source": "mempool.guide", "points": [["AlphaPool", 384, 380, [["Soggy Waffle", 120], ["Grumpy Pickle", 60]]], ["BravoPool", 200, 0, []], ["CharliePool", 150, 90, [["Fiat Is Theft", 90]]]] }

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · XBT Stats</title>
+  <meta name="description" content="Where XBT Stats gets its numbers, how to check them yourself, and the disclaimer.">
+  <link rel="canonical" href="https://xbtstats.com/about">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="About · XBT Stats">
+  <meta property="og:description" content="Where XBT Stats gets its numbers, how to check them yourself, and the disclaimer.">
+  <meta property="og:url" content="https://xbtstats.com/about">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script type="module" src="/js/about.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">Dashboard</a>
+      <a href="/charts">Charts</a>
+      <a href="/nodes">Nodes</a>
+      <a href="/mining">Mining</a>
+      <a href="/convert">Converter</a>
+      <a href="/about" aria-current="page">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1>About</h1>
+    <p class="muted">How this site works, where its numbers come from and what it keeps about you.</p>
+
+    <div class="about-grid">
+      <section class="card prose about-intro" aria-labelledby="h-about">
+        <h2 id="h-about">About XBT Stats</h2>
+        <p>XBT is the coin of the BLAKE2b proof-of-work chain, which split from bitcoin at block 961,632 and switched to BLAKE2b mining at block 961,640. XBT is not BTC: they are separate coins on separate chains.</p>
+        <p>XBT Stats is an independent community dashboard for that chain: live price, network, mining and node numbers in one place.</p>
+      </section>
+
+      <section class="card prose about-sources" aria-labelledby="h-sources">
+        <h2 id="h-sources">Where the numbers come from</h2>
+        <ul>
+          <li><strong>Chain data</strong> comes from the mempool.guide explorer, with mempool.kilombino.com as a backup. The two are compared on every update, and a notice appears if they disagree by more than 2 blocks.</li>
+          <li><strong>Supply, % issued, halvings and future supply</strong> are calculated from the block height using the 210,000-block halving schedule. Supply is the theoretical issued amount: it ignores coins that are unspendable or were never claimed.</li>
+          <li><strong>Price</strong> comes from public USD-stablecoin markets (NonKYC BTCB2/USDT and Neoxa XBT/USDC; Neoxa calls the coin XBT). USDT and USDC are counted as $1. These are thin markets, so treat the price as a rough guide. Price history starts Sep 1, 2026: earlier days were filled in once from Neoxa’s price history, and since then the site records the price every minute.</li>
+          <li><strong>DATUM vs Stratum</strong> on the Mining page: a block is DATUM when the miner built its own block template (gold in the pool pie) and Stratum when the pool built it (silver). The split comes from mempool.guide’s per-miner block counts; the backup explorer has none, so the pie then shows pools only.</li>
+          <li><strong>Exchanges</strong> on the Converter page lists each market’s last price, bid and ask, and 24-hour volume. Neoxa’s XBT/USDT market is listed there but too thin to count toward the price. Neoxa trades through automated pools with no order book, so it has no bid or ask. The two Neoxa markets are the only links on this site to an exchange.</li>
+          <li><strong>Moving averages</strong> are plain averages of daily closing prices: the last 50 and 200 days, shown on the Converter page and as the 50 MA and 200 MA lines on the price chart.</li>
+          <li><strong>What’s in your block?</strong> on the dashboard reads the newest block from the same explorers and counts only what is data by definition: OP_RETURN outputs (how many, their total bytes, and which transactions have one) and inscription-style envelopes. Share of block is the OP_RETURN bytes divided by the block’s size; below 1% its bar is not to scale. Nothing else is guessed at, so large spending scripts such as multisig are not counted as data.</li>
+          <li><strong>Node counts</strong> on the Nodes page come from the <a href="https://github.com/LionThunderFingers/Bitcoin-Node-census">B2B Node Census</a>, an independent crawler of the XBT node network that publishes hourly. Reachable counts are a lower bound, because nodes that don’t accept incoming connections aren’t counted. This site shows counts only, never node addresses.</li>
+          <li><strong>The converter</strong> turns XBT, sats and US dollars into each other at the same live price, so it is as rough as the price is. <strong>World currencies</strong> convert that USD price at daily exchange rates from ExchangeRate-API (with the public Currency API as a backup).</li>
+          <li><strong>The mining calculator</strong> estimates earnings from today’s network hashrate, fees, block time and price, assuming they stay the same. Real mining rewards vary.</li>
+          <li>Every number shows how old it is. If a source stops answering, the site keeps the last good data and labels it.</li>
+        </ul>
+      </section>
+
+      <section class="card prose about-check" aria-labelledby="h-check">
+        <h2 id="h-check">Check it yourself</h2>
+        <p>If you run a BLAKE2b node, compare the block height, difficulty and hashrate with your own node (<code>getblockcount</code>, <code>getdifficulty</code>, <code>getnetworkhashps</code>). Your node is the final word.</p>
+      </section>
+
+      <section class="card prose about-privacy" aria-labelledby="h-privacy">
+        <h2 id="h-privacy">Privacy</h2>
+        <p>This site uses no cookies, no analytics and no trackers. Your browser only talks to this site, never to the explorers or exchanges directly; an exchange sees you only if you follow one of its links. Your chart choices (range, LOG, moving averages) are remembered in your own browser only and are never sent anywhere.</p>
+      </section>
+
+      <section class="card prose about-disclaimer" aria-labelledby="h-disclaimer">
+        <h2 id="h-disclaimer">Disclaimer</h2>
+        <p>Provided as is, without warranty. Not financial advice. The code is open source under the MIT license: <a href="https://github.com/xbtbits/xbt-stats">github.com/xbtbits/xbt-stats</a>.</p>
+      </section>
+    </div>
+
+    <section class="card network-history" aria-labelledby="h-history">
+      <h2 id="h-history">Network history</h2>
+      <dl class="stats">
+        <div class="row"><dt>Blocks since BLAKE2b</dt><dd class="num" data-k="history.blocksSinceSwitch">—</dd></div>
+        <div class="row"><dt>Days since BLAKE2b</dt><dd class="num" data-k="history.daysSinceSwitch">—</dd></div>
+      </dl>
+      <ol class="upgrades" id="upgrades"></ol>
+    </section>
+
+    <section class="card prose about-status" aria-labelledby="h-status">
+      <h2 id="h-status">Sources and status</h2>
+      <p>Chain data: <span data-k="chain.source">—</span> (updated <span data-k="chain.updated">—</span>), <span data-k="chain.crossCheck">—</span>. Prices: USD-stablecoin markets, USDT and USDC counted as $1.</p>
+      <p>Status: <span data-k="status.line">—</span></p>
+      <p>Explorers: <a href="https://mempool.guide" rel="noopener noreferrer">mempool.guide</a> · <a href="https://mempool.kilombino.com" rel="noopener noreferrer">mempool.kilombino.com</a></p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Not financial advice. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS price_points (
+  ts INTEGER NOT NULL,
+  venue TEXT NOT NULL,
+  label TEXT NOT NULL,
+  price REAL NOT NULL,
+  vol_base REAL NOT NULL,
+  vol_usd REAL NOT NULL,
+  high REAL NOT NULL,
+  low REAL NOT NULL,
+  change_pct REAL NOT NULL,
+  PRIMARY KEY (ts, venue)
+);
+CREATE TABLE IF NOT EXISTS price_hourly (
+  ts INTEGER PRIMARY KEY,
+  price REAL NOT NULL
+);
+CREATE TABLE IF NOT EXISTS price_daily (ts INTEGER PRIMARY KEY, price REAL NOT NULL);
+CREATE TABLE IF NOT EXISTS kv (
+  k TEXT PRIMARY KEY,
+  v TEXT NOT NULL
+);

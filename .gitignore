@@ -1,0 +1,7 @@
+.superpowers/
+.wrangler/
+node_modules/
+.dev.vars
+.DS_Store
+test-results/
+playwright-report/

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XBT Stats · live XBT network dashboard</title>
+  <meta name="description" content="Live XBT statistics: price, blocks, mining, difficulty, fees, supply and halving for the BLAKE2b chain.">
+  <link rel="canonical" href="https://xbtstats.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="XBT Stats · live XBT network dashboard">
+  <meta property="og:description" content="Live XBT statistics: price, blocks, mining, difficulty, fees, supply and halving for the BLAKE2b chain.">
+  <meta property="og:url" content="https://xbtstats.com/">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/uPlot.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script src="/vendor/qrcode.js" defer></script>
+  <script src="/js/donate.js" defer></script>
+  <script src="/vendor/uPlot.iife.min.js" defer></script>
+  <script type="module" src="/js/home.js"></script>
+  <script type="module" src="/js/block-card.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/" aria-current="page">Dashboard</a>
+      <a href="/charts">Charts</a>
+      <a href="/nodes">Nodes</a>
+      <a href="/mining">Mining</a>
+      <a href="/convert">Converter</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="notice" id="notice-offline" hidden role="status"><span class="notice-text"></span></div>
+    <div class="notice" id="notice-stale-chain" hidden role="status"><span class="notice-text"></span></div>
+    <div class="notice" id="notice-stale-price" hidden role="status"><span class="notice-text"></span></div>
+    <div class="notice" id="notice-disagree" hidden role="status"><span class="notice-text"></span></div>
+    <div class="notice" id="notice-markets" hidden role="status"><span class="notice-text"></span></div>
+
+    <p class="term" aria-hidden="true">Live price</p>
+    <section class="card price-panel" aria-labelledby="price-title">
+      <div class="price-top">
+        <div class="price-main">
+          <h1 id="price-title" class="stat-label price-label">XBT live price (USD)</h1>
+          <p class="hero-price num" data-k="price.usd">—</p>
+          <p class="change-line num"><span data-k="price.changeLine" data-dir="flat">—</span> <span class="change-period" data-k="price.changePeriod">24H</span></p>
+        </div>
+        <dl class="price-stats">
+          <div><dt>24h high</dt><dd class="num" data-k="price.high24h">—</dd></div>
+          <div><dt>24h low</dt><dd class="num" data-k="price.low24h">—</dd></div>
+          <div><dt>24h vol (XBT)</dt><dd class="num" data-k="price.volBase24h">—</dd></div>
+          <div><dt>24h vol (USD)</dt><dd class="num" data-k="price.volUsd24h">—</dd></div>
+          <div><dt>ATH (USD)</dt><dd class="num" data-k="price.ath">—</dd></div>
+          <div><dt>Market cap</dt><dd class="num" data-k="price.marketCap">—</dd></div>
+          <div><dt>Sats per USD</dt><dd class="num" data-k="price.satsPerUsd">—</dd></div>
+        </dl>
+      </div>
+      <div class="price-chart" id="price-chart">
+        <h2 class="sr-only" id="price-chart-title">Price chart</h2>
+        <div class="chart-head">
+          <div class="tabs" role="group" aria-label="Price chart range">
+            <button class="tab" type="button" data-range="1h" aria-pressed="false">1H</button>
+            <button class="tab" type="button" data-range="1d" aria-pressed="true">1D</button>
+            <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+            <button class="tab" type="button" data-range="1m" aria-pressed="false">1M</button>
+            <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+            <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+            <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+            <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+            <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+            <button class="tab" type="button" data-range="all" aria-pressed="false">ALL</button>
+          </div>
+          <div class="chart-tools">
+            <button class="tab tab-ma" type="button" data-ma="50" aria-pressed="false">50 MA</button>
+            <button class="tab tab-ma" type="button" data-ma="200" aria-pressed="false">200 MA</button>
+            <button class="tab chart-log" type="button" data-log aria-pressed="false">LOG</button>
+          </div>
+        </div>
+        <div class="plot"></div>
+        <p class="chart-note" hidden></p>
+        <p class="chart-summary sr-only" aria-live="polite"></p>
+      </div>
+      <p class="fig" aria-hidden="true">XBT / USD</p>
+      <p class="source-line"><span data-k="price.sources">—</span> · updated <span data-k="price.updated">—</span></p>
+    </section>
+
+    <p class="term" aria-hidden="true">Network</p>
+    <dl class="counters counters-centered" aria-label="Key network numbers">
+      <div class="counter"><dt>Block height</dt><dd class="num" data-k="chain.height">—</dd></div>
+      <div class="counter"><dt>Hashrate</dt><dd class="num" data-k="mining.hashrate">—</dd></div>
+      <div class="counter"><dt>Blocks to halving</dt><dd class="num" data-k="halving.blocksLeft">—</dd></div>
+      <div class="counter"><dt>Issued of 21M</dt><dd class="num" data-k="chain.percentIssued">—</dd></div>
+    </dl>
+
+    <p class="term" aria-hidden="true">Chain stats</p>
+    <div class="grid">
+      <section class="card" aria-labelledby="h-chain">
+        <h2 id="h-chain">Blockchain</h2>
+        <dl class="stats">
+          <div class="row"><dt>Block height</dt><dd class="num" data-k="chain.height">—</dd></div>
+          <div class="row"><dt>Time since last block</dt><dd class="num" data-k="chain.sinceLastBlock">—</dd></div>
+          <div class="row"><dt>Average block time</dt><dd class="num" data-k="chain.avgBlockTime">—</dd></div>
+          <div class="row"><dt>Supply</dt><dd class="num" data-k="chain.supply">—</dd></div>
+          <div class="row"><dt>Issued of 21M</dt><dd class="num" data-k="chain.percentIssued">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="h-diff">
+        <h2 id="h-diff">Difficulty</h2>
+        <dl class="stats">
+          <div class="row"><dt>Difficulty</dt><dd class="num" data-k="difficulty.difficulty">—</dd></div>
+          <div class="row"><dt>Epoch</dt><dd class="num" data-k="difficulty.epoch">—</dd></div>
+          <div class="row"><dt>Estimated change</dt><dd class="num" data-c="difficulty.change">—</dd></div>
+          <div class="row"><dt>Blocks to retarget</dt><dd class="num" data-k="difficulty.blocksToRetarget">—</dd></div>
+          <div class="row"><dt>Estimated retarget</dt><dd class="num" data-k="difficulty.retargetDate">—</dd></div>
+          <div class="row"><dt>Last change</dt><dd class="num" data-c="difficulty.lastChange">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="h-mining">
+        <h2 id="h-mining">Mining</h2>
+        <dl class="stats">
+          <div class="row"><dt>Hashrate</dt><dd class="num" data-k="mining.hashrate">—</dd></div>
+          <div class="row"><dt>Block reward</dt><dd class="num" data-k="mining.subsidy">—</dd></div>
+          <div class="row"><dt>Blocks (24h)</dt><dd class="num" data-k="mining.blocks24h">—</dd></div>
+          <div class="row"><dt>Transactions (last 144 blocks)</dt><dd class="num" data-k="mining.tx144">—</dd></div>
+          <div class="row"><dt>Fees (last 144 blocks)</dt><dd class="num" data-k="mining.fees144">—</dd></div>
+          <div class="row"><dt>Fees of total reward</dt><dd class="num" data-k="mining.feesPct">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="h-pools">
+        <div class="pools-head"><h2 id="h-pools">Mining pools (24h)</h2><span class="pools-col" aria-hidden="true">Share · Blocks</span></div>
+        <ul class="pools stacked" id="pools">
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+          <li class="pool"><span class="pool-name">—</span><span class="leds" aria-hidden="true"></span><span class="pool-share num">—</span></li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="h-fees">
+        <h2 id="h-fees">Fees and mempool</h2>
+        <dl class="stats">
+          <div class="row"><dt>Next block</dt><dd class="num" data-k="fees.fastest">—</dd></div>
+          <div class="row"><dt>30 minutes</dt><dd class="num" data-k="fees.halfHour">—</dd></div>
+          <div class="row"><dt>1 hour</dt><dd class="num" data-k="fees.hour">—</dd></div>
+          <div class="row"><dt>Pending transactions</dt><dd class="num" data-k="mempool.count">—</dd></div>
+          <div class="row"><dt>Mempool size</dt><dd class="num" data-k="mempool.vsize">—</dd></div>
+          <div class="row"><dt>Blocks to clear</dt><dd class="num" data-k="mempool.blocksToClear">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="card block-card" id="block-card" aria-labelledby="h-block">
+        <h2 id="h-block">What’s in your block?</h2>
+        <p class="block-legend"><span>XBT transactions</span><span class="d">OP_RETURN data</span></p>
+        <div class="block-body">
+          <canvas class="block-map" role="img" aria-label="Latest block loading" data-tiles="0" data-data-tiles="0"></canvas>
+          <div class="block-facts">
+            <dl class="stats">
+              <div class="row"><dt data-b="title">Block —</dt><dd class="num" data-b="age">—</dd></div>
+              <div class="row"><dt>Transactions</dt><dd class="num" data-b="txs">—</dd></div>
+              <div class="row"><dt>OP_RETURN outputs</dt><dd class="num" data-b="opReturn">—</dd></div>
+              <div class="row block-share"><dt>Share of block</dt><dd class="num" data-b="share">—</dd></div>
+            </dl>
+            <div class="ledbar" aria-hidden="true" title="Each LED is an equal share of the block. Data smaller than one LED is shown as a thin white mark at its smallest visible width."></div>
+            <dl class="stats">
+              <div class="row"><dt>Inscription envelopes</dt><dd class="num" data-b="envelopes">—</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="h-halving">
+        <h2 id="h-halving">Next halving</h2>
+        <dl class="stats">
+          <div class="row"><dt>Halving block</dt><dd class="num" data-k="halving.height">—</dd></div>
+          <div class="row"><dt>Blocks left</dt><dd class="num" data-k="halving.blocksLeft">—</dd></div>
+          <div class="row"><dt>Estimated date</dt><dd class="num" data-k="halving.date">—</dd></div>
+          <div class="row"><dt>Epoch progress</dt><dd class="num" data-k="halving.progress">—</dd></div>
+          <div class="row"><dt>Reward after</dt><dd class="num" data-k="halving.subsidyAfter">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="h-future">
+        <h2 id="h-future">Future halvings</h2>
+        <table>
+          <thead><tr><th scope="col">Block</th><th scope="col">Estimated date</th><th scope="col" class="num">Reward after (XBT)</th></tr></thead>
+          <tbody id="future-halvings">
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" aria-labelledby="h-supply">
+        <h2 id="h-supply">Future supply</h2>
+        <table>
+          <thead><tr><th scope="col">Issued</th><th scope="col">Estimated date</th><th scope="col" class="num">Block</th></tr></thead>
+          <tbody id="milestones">
+          <tr><td class="num left">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num left">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num left">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          <tr><td class="num left">—</td><td class="num left">—</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+        <dl class="stats">
+          <div class="row"><dt>Still to be mined</dt><dd class="num" data-k="supply.remaining">—</dd></div>
+        </dl>
+      </section>
+    </div>
+
+    <p class="term" aria-hidden="true">Support<span class="cur"></span></p>
+    <!-- Donation address: from a donation-only wallet (never a personal one). Scan-check the QR after any change. -->
+    <section class="card donate" id="donate" aria-labelledby="h-donate" data-address="bc1q0m70hu6z59l2kffwwk0sfdd0f94z9y6gjzta2s">
+      <div class="donate-text">
+        <h2 id="h-donate">Support XBT Stats</h2>
+        <p>XBT Stats is a free independent project for the XBT community: ad-free and tracker-free.</p>
+        <p>If you find my work useful, a donation in XBT helps keep it running. Thank you.</p>
+        <p class="donate-warn">XBT (BLAKE2b) chain only.</p>
+        <div class="donate-addr">
+          <code id="donate-address">Donation address coming soon</code>
+          <button class="donate-copy" type="button" disabled>Copy</button>
+        </div>
+      </div>
+      <canvas class="donate-qr" aria-hidden="true" hidden></canvas>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Not financial advice. Data is provided as is. XBT is not BTC: they are separate coins on separate chains. <a href="/about">About and sources</a>. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>

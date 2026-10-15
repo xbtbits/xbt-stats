@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nodes · XBT Stats</title>
+  <meta name="description" content="XBT node network: reachable, known and stable nodes, sync status, the coinbase lock soft fork and node versions.">
+  <link rel="canonical" href="https://xbtstats.com/nodes">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="Nodes · XBT Stats">
+  <meta property="og:description" content="XBT node network: reachable, known and stable nodes, sync status, the coinbase lock soft fork and node versions.">
+  <meta property="og:url" content="https://xbtstats.com/nodes">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/uPlot.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script src="/vendor/uPlot.iife.min.js" defer></script>
+  <script type="module" src="/js/nodes.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">Dashboard</a>
+      <a href="/charts">Charts</a>
+      <a href="/nodes" aria-current="page">Nodes</a>
+      <a href="/mining">Mining</a>
+      <a href="/convert">Converter</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="notice" id="notice-offline" hidden role="status"><span class="notice-text"></span></div>
+
+    <h1>Nodes</h1>
+    <p class="muted">The XBT (BLAKE2b) node network, counted by an independent crawler.</p>
+
+    <dl class="counters counters-centered" aria-label="Node counts">
+      <div class="counter"><dt>Reachable nodes</dt><dd class="num" data-k="nodes.reachable">—</dd></div>
+      <div class="counter"><dt>Known nodes</dt><dd class="num" data-k="nodes.known">—</dd></div>
+      <div class="counter"><dt>Stable nodes</dt><dd class="num" data-k="nodes.stable">—</dd></div>
+      <div class="counter counter-lock"><dt>Coinbase lock enforcing</dt><dd class="num" data-k="nodes.enforcingPct">—</dd></div>
+    </dl>
+
+
+    <section class="card chart-card" id="nodes-chart" aria-labelledby="c-nodes">
+      <div class="chart-head chart-head-titled">
+        <h2 id="c-nodes">Nodes over time</h2>
+        <div class="tabs" role="group" aria-label="Nodes chart range">
+          <button class="tab" type="button" data-range="7d" aria-pressed="false">7D</button>
+          <button class="tab" type="button" data-range="1m" aria-pressed="false">1M</button>
+          <button class="tab" type="button" data-range="3m" aria-pressed="false">3M</button>
+          <button class="tab" type="button" data-range="6m" aria-pressed="false">6M</button>
+          <button class="tab" type="button" data-range="ytd" aria-pressed="false">YTD</button>
+          <button class="tab" type="button" data-range="1y" aria-pressed="false">1Y</button>
+          <button class="tab" type="button" data-range="5y" aria-pressed="false">5Y</button>
+          <button class="tab" type="button" data-range="10y" aria-pressed="false">10Y</button>
+          <button class="tab" type="button" data-range="all" aria-pressed="true">ALL</button>
+        </div>
+        <ul class="chart-legend" aria-label="Lines">
+          <li><span class="legend-key" data-line="reachable" aria-hidden="true"></span>Reachable</li>
+          <li><span class="legend-key" data-line="enforcing" aria-hidden="true"></span>Coinbase lock</li>
+          <li><span class="legend-key" data-line="known" aria-hidden="true"></span>Known</li>
+        </ul>
+      </div>
+      <div class="plot"></div>
+      <p class="chart-summary" aria-live="polite"></p>
+    </section>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="h-versions">
+        <h2 id="h-versions">Node versions</h2>
+        <ul class="pools versions" id="versions">
+          <li class="pool"><span class="version-label">—</span><span class="pool-share num">—</span><span class="leds" aria-hidden="true"></span></li>
+          <li class="pool"><span class="version-label">—</span><span class="pool-share num">—</span><span class="leds" aria-hidden="true"></span></li>
+          <li class="pool"><span class="version-label">—</span><span class="pool-share num">—</span><span class="leds" aria-hidden="true"></span></li>
+          <li class="pool"><span class="version-label">—</span><span class="pool-share num">—</span><span class="leds" aria-hidden="true"></span></li>
+          <li class="pool"><span class="version-label">—</span><span class="pool-share num">—</span><span class="leds" aria-hidden="true"></span></li>
+        </ul>
+        <button class="list-more ghost" type="button" disabled tabindex="-1">Show all</button>
+      </section>
+
+      <section class="card" aria-labelledby="h-fork">
+        <h2 id="h-fork">Coinbase lock soft fork</h2>
+        <dl class="stats">
+          <div class="row"><dt>Activation window</dt><dd class="num" data-k="fork.window">—</dd></div>
+          <div class="row"><dt>Enforcing nodes</dt><dd class="num" data-k="fork.enforcing">—</dd></div>
+          <div class="row"><dt>Not enforcing</dt><dd class="num" data-k="fork.notEnforcing">—</dd></div>
+          <div class="row"><dt>Window progress</dt><dd class="num" data-k="fork.progress">—</dd></div>
+          <div class="row"><dt>Blocks remaining</dt><dd class="num" data-k="fork.remaining">—</dd></div>
+        </dl>
+        <div class="leds" id="fork-progress" role="progressbar" aria-label="Activation window progress" aria-valuemin="0" aria-valuemax="100"></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-sync">
+        <h2 id="h-sync">Sync status</h2>
+        <dl class="stats">
+          <div class="row"><dt><span class="swatch" data-sync="tip" aria-hidden="true"></span>At tip</dt><dd class="num" data-k="sync.tip">—</dd></div>
+          <div class="row"><dt><span class="swatch" data-sync="near" aria-hidden="true"></span>Near tip</dt><dd class="num" data-k="sync.near">—</dd></div>
+          <div class="row"><dt><span class="swatch" data-sync="day" aria-hidden="true"></span>Within a day</dt><dd class="num" data-k="sync.day">—</dd></div>
+          <div class="row"><dt><span class="swatch" data-sync="behind" aria-hidden="true"></span>Behind</dt><dd class="num" data-k="sync.behind">—</dd></div>
+        </dl>
+        <div class="leds" id="sync-bar" role="img" aria-label="Sync status"></div>
+      </section>
+    </div>
+
+    <p class="credit">Node data: <a href="https://github.com/LionThunderFingers/Bitcoin-Node-census" rel="noopener noreferrer">B2B Node Census</a> (independent crawler, updated hourly) · Reachable counts are a lower bound — nodes that don’t accept incoming connections aren’t counted. · Updated <span data-k="nodes.updated">—</span>.</p>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Node counts only: this site never shows node addresses. Not financial advice. Data is provided as is. <a href="/about">About and sources</a>. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>

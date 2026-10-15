@@ -1,0 +1,6 @@
+# Redirect-only Worker for www.xbtstats.com. Deploy: npx wrangler deploy -c wrangler.www.toml
+name = "xbt-stats-www"
+main = "worker/www/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = false
+routes = [{ pattern = "www.xbtstats.com", custom_domain = true }]

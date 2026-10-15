@@ -1,0 +1,206 @@
+{
+  "v": 1,
+  "generatedAt": 1791660030000,
+  "flags": {
+    "usedFallback": false,
+    "sourcesDisagree": false,
+    "marketsDisagree": false
+  },
+  "sources": {
+    "chain": {
+      "name": "mempool.guide",
+      "fetchedAt": 1791660030000
+    },
+    "crossCheck": {
+      "name": "mempool.kilombino.com",
+      "tip": 976572
+    },
+    "errors": []
+  },
+  "chain": {
+    "height": 976572,
+    "tipTime": 1791659900,
+    "avgBlockSeconds": 510,
+    "supplySats": 2011429062500000,
+    "percentIssued": 95.78233630952381,
+    "splitHeight": 961632,
+    "switchHeight": 961640,
+    "switchTime": 1788070477,
+    "blocksSinceSwitch": 14932,
+    "lastBlockTxs": 62,
+    "avgBlockSizeBytes": 438000
+  },
+  "difficulty": {
+    "difficulty": 21846214529159510000,
+    "epoch": 484,
+    "changePct": 17.48,
+    "lastChangePct": 9.975,
+    "blocksToRetarget": 1188,
+    "retargetEta": 1792261237408,
+    "nextRetargetHeight": 977760
+  },
+  "mining": {
+    "hashrate": 43296303440072940,
+    "subsidySats": 312500000,
+    "blocks24h": 153,
+    "tx144": 34158,
+    "fees144Sats": 39895655,
+    "feesPctOfReward": 0.08857848007818614
+  },
+  "pools": [
+    {
+      "name": "AlphaPool",
+      "blocks": 52,
+      "share": 33.98692810457516
+    },
+    {
+      "name": "BravoPool",
+      "blocks": 30,
+      "share": 19.607843137254903
+    },
+    {
+      "name": "Other",
+      "blocks": 71,
+      "share": 46.40522875816993
+    }
+  ],
+  "fees": {
+    "fastest": 2,
+    "halfHour": 1.5,
+    "hour": 1
+  },
+  "mempool": {
+    "count": 1957,
+    "vsize": 2342826,
+    "totalFeeSats": 857347,
+    "blocksToClear": 12
+  },
+  "halving": {
+    "height": 1050000,
+    "blocksLeft": 73428,
+    "eta": 1829108310000,
+    "epochProgress": 65.03428571428572,
+    "subsidyAfterSats": 156250000,
+    "future": [
+      {
+        "height": 1050000,
+        "eta": 1829108310000,
+        "subsidyAfterSats": 156250000
+      },
+      {
+        "height": 1260000,
+        "eta": 1955108310000,
+        "subsidyAfterSats": 78125000
+      },
+      {
+        "height": 1470000,
+        "eta": 2081108310000,
+        "subsidyAfterSats": 39062500
+      },
+      {
+        "height": 1680000,
+        "eta": 2207108310000,
+        "subsidyAfterSats": 19531250
+      },
+      {
+        "height": 1890000,
+        "eta": 2333108310000,
+        "subsidyAfterSats": 9765625
+      },
+      {
+        "height": 2100000,
+        "eta": 2459108310000,
+        "subsidyAfterSats": 4882812
+      }
+    ]
+  },
+  "supply": {
+    "milestones": [
+      {
+        "pct": 96,
+        "height": 991199,
+        "reached": false,
+        "eta": 1799119800000
+      },
+      {
+        "pct": 99,
+        "height": 1411199,
+        "reached": false,
+        "eta": 2045827710000
+      },
+      {
+        "pct": 99.9,
+        "height": 2094959,
+        "reached": false,
+        "eta": 2456083710000
+      },
+      {
+        "pct": 100,
+        "height": 6929999,
+        "reached": false,
+        "eta": 5357107710000
+      }
+    ],
+    "remainingSats": 88570935190000
+  },
+  "price": {
+    "usd": 851.9869956632151,
+    "changePct24h": -2.4,
+    "high24h": 930,
+    "low24h": 839.07,
+    "volBase24h": 1201.18351216,
+    "volUsd24h": 1081572.20384067,
+    "ath": {
+      "usd": 1187,
+      "at": 1789500000000
+    },
+    "marketCapUsd": 17137114039.490524,
+    "venues": [
+      {
+        "label": "NonKYC BTCB2/USDT",
+        "price": 849.52,
+        "volUsd": 766921.9755
+      },
+      {
+        "label": "Neoxa XBT/USDC",
+        "price": 858,
+        "volUsd": 314650.22834067
+      }
+    ],
+    "markets": [
+      {
+        "label": "NonKYC BTCB2/USDT",
+        "link": null,
+        "inPrice": true,
+        "price": 849.52,
+        "bid": 847.1,
+        "ask": 851.3,
+        "volUsd": 766921.9755,
+        "updatedAt": 1791659970000
+      },
+      {
+        "label": "Neoxa XBT/USDC",
+        "link": "https://neoxa.exchange/trade/BTCB2_USDC",
+        "inPrice": true,
+        "price": 858,
+        "bid": null,
+        "ask": null,
+        "volUsd": 314650.22834067,
+        "updatedAt": 1791659970000
+      },
+      {
+        "label": "Neoxa XBT/USDT",
+        "link": "https://neoxa.exchange/trade/BTCB2_USDT",
+        "inPrice": false,
+        "price": 861.2,
+        "bid": null,
+        "ask": null,
+        "volUsd": 9650.4,
+        "updatedAt": 1791659970000
+      }
+    ],
+    "marketsDisagree": false,
+    "updatedAt": 1791659970000,
+    "historySince": 1789000000000
+  }
+}

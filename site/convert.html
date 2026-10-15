@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Converter · XBT Stats</title>
+  <meta name="description" content="Convert between XBT, sats and US dollars at the live XBT price.">
+  <link rel="canonical" href="https://xbtstats.com/convert">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="XBT Stats">
+  <meta property="og:title" content="Converter · XBT Stats">
+  <meta property="og:description" content="Convert between XBT, sats and US dollars at the live XBT price.">
+  <meta property="og:url" content="https://xbtstats.com/convert">
+  <meta property="og:image" content="https://xbtstats.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XBT Stats: live XBT network stats for the BLAKE2b chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png?v=2">
+  <link rel="manifest" href="/manifest.webmanifest?v=2">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/michroma-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/brand.js" defer></script>
+  <script type="module" src="/js/convert.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="/">XBT Stats</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">Dashboard</a>
+      <a href="/charts">Charts</a>
+      <a href="/nodes">Nodes</a>
+      <a href="/mining">Mining</a>
+      <a href="/convert" aria-current="page">Converter</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="notice" id="notice-offline" hidden role="status"><span class="notice-text"></span></div>
+
+    <h1>Converter</h1>
+    <p class="muted">Switch between XBT, sats and US dollars, and see XBT in world currencies.</p>
+
+    <div class="convert-grid">
+    <div class="convert-side">
+      <section class="card convert-card" aria-labelledby="h-convert">
+        <h2 id="h-convert">XBT converter</h2>
+        <div class="convert-fields">
+          <div class="convert-field">
+            <label for="in-xbt">XBT</label>
+            <input id="in-xbt" class="convert-input num" data-field="xbt" type="text" inputmode="decimal" autocomplete="off" disabled>
+          </div>
+          <div class="convert-field">
+            <label for="in-sats">Sats</label>
+            <input id="in-sats" class="convert-input num" data-field="sats" type="text" inputmode="decimal" autocomplete="off" disabled>
+          </div>
+          <div class="convert-field">
+            <label for="in-usd">USD</label>
+            <input id="in-usd" class="convert-input num" data-field="usd" type="text" inputmode="decimal" autocomplete="off" disabled>
+          </div>
+        </div>
+        <p class="convert-msg" id="convert-msg" role="status"></p>
+        <p class="convert-rate num" id="convert-rate">Loading the live price…</p>
+      </section>
+
+      <section class="card markets-card" aria-labelledby="h-markets">
+        <h2 id="h-markets">Exchanges</h2>
+        <table class="markets-table">
+          <thead><tr><th scope="col">Venue</th><th scope="col" class="num">Last</th><th scope="col" class="num">Bid / Ask</th><th scope="col" class="num">24h vol</th></tr></thead>
+          <tbody id="markets-body">
+          <tr><th scope="row">NonKYC BTCB2/USDT<span class="market-arrow"></span><span class="market-mark"></span></th><td class="num ghost-text">$000.00</td><td class="num ghost-text">000.00 / 000.00</td><td class="num ghost-text">$000.00K</td></tr>
+          <tr><th scope="row">Neoxa XBT/USDC<span class="market-arrow"> ↗</span><span class="market-mark"></span></th><td class="num ghost-text">$000.00</td><td class="num ghost-text">—</td><td class="num ghost-text">$000.00K</td></tr>
+          <tr><th scope="row">Neoxa XBT/USDT<span class="market-arrow"> ↗</span><span class="market-mark">*</span></th><td class="num ghost-text">$000.00</td><td class="num ghost-text">—</td><td class="num ghost-text">$000.00K</td></tr>
+          </tbody>
+        </table>
+        <p class="muted markets-note" id="markets-note">Neoxa trades through automated pools with no order book, so it has no bid or ask. * Shown only: too little volume to count toward the site’s price.</p>
+      </section>
+
+      <section class="card ma-card" aria-labelledby="h-ma">
+        <h2 id="h-ma">Moving averages</h2>
+        <dl class="stats">
+          <div class="row"><dt>50-day average</dt><dd class="num" data-k="ma.50">—</dd></div>
+          <div class="row"><dt>200-day average</dt><dd class="num" data-k="ma.200">—</dd></div>
+          <div class="row"><dt>Price / 50-day average</dt><dd class="num" data-k="ma.ratio50">—</dd></div>
+          <div class="row"><dt>Price / 200-day average</dt><dd class="num" data-k="ma.ratio200">—</dd></div>
+        </dl>
+      </section>
+    </div>
+
+    <section class="card world-card" aria-labelledby="h-world">
+      <h2 id="h-world">XBT in world currencies</h2>
+      <table class="world-table">
+        <thead><tr><th scope="col">Currency</th><th scope="col" class="num">1 XBT</th><th scope="col" class="num">Sats per unit</th></tr></thead>
+        <tbody id="world-body">
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">—</th><td class="num">—</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <p class="muted world-source" id="world-source">Loading exchange rates…</p>
+    </section>
+    </div>
+
+    <p class="credit">Converted at the live USD price (USDT/USDC markets counted as $1); other currencies use today’s exchange rates.</p>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Not financial advice. Data is provided as is. <a href="/about">About and sources</a>. <a href="https://github.com/xbtbits/xbt-stats">Source code</a>.</p>
+  </footer>
+</body>
+</html>
